@@ -7,8 +7,8 @@ from PIL import Image
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 
-IMAGE_PATH = PROJECT_ROOT / "data" / "input" / "satellite.png"
-DEPTH_PATH = PROJECT_ROOT / "data" / "output" / "baseline0_depth.npy"
+IMAGE_PATH = PROJECT_ROOT / "data" / "input" / "snowy_mountains.png"
+DEPTH_PATH = PROJECT_ROOT / "data" / "output" / "baseline05" / "snowy_mountains.npy"
 
 
 def main() -> None:
@@ -23,7 +23,7 @@ def main() -> None:
     axes[0].axis("off")
 
     axes[1].imshow(depth, cmap="turbo")
-    axes[1].set_title("Baseline 0 Relative Depth")
+    axes[1].set_title("Baseline 0.5 Relative Depth")
     axes[1].axis("off")
 
     plt.tight_layout()
