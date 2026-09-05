@@ -221,7 +221,7 @@ Fine-tune/adapt the monocular depth foundation model using remote-sensing imager
 
 **Summary CSV:** `data/output/baseline05/summary.csv`
 
-**Model:** `depth-anything/Depth-Anything-V2-Small-hf`
+**Model:** `depth-anything/Depth-Anything-V2-Large-hf`
 
 **Inference device:** CUDA / RTX 5060 Laptop GPU
 
