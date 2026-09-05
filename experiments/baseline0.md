@@ -99,6 +99,17 @@ floating-point statistics rather than an invalid prediction.
 The depth tensor will be converted to float32 before calculating statistics
 in the next run.
 
+It was fixed in the subsequent run of the experiment. and got following results:
+
+```text
+Depth statistics:
+Shape : (572, 648)
+Min   : 28.781250
+Max   : 254.250000
+Mean  : 116.374168
+Std   : 44.831318
+```
+
 ---
 
 ## 9. Conclusion
@@ -114,4 +125,4 @@ and quantitative height estimation.
 
 ## 10. Next Experiment
 
-**Baseline 0.5 — Systematic Evaluation of the pretrained model**
+Baseline 0.5 — Systematic Evaluation of the pretrained model
