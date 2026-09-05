@@ -1,4 +1,5 @@
 from pathlib import Path
+import time
 
 import numpy as np
 import torch
@@ -71,13 +72,23 @@ def main() -> None:
         for key, value in inputs.items()
     }
 
-    with torch.no_grad():
+    if DEVICE == "cuda":
+        torch.cuda.synchronize()
 
+    start = time.perf_counter()
+
+    with torch.no_grad():
         if DEVICE == "cuda":
             with torch.autocast(device_type="cuda", dtype=torch.float16):
                 outputs = model(**inputs)
         else:
             outputs = model(**inputs)
+
+    if DEVICE == "cuda":
+        torch.cuda.synchronize()
+
+    elapsed = time.perf_counter() - start
+
 
     post_processed = processor.post_process_depth_estimation(
         outputs,
@@ -93,6 +104,7 @@ def main() -> None:
     # Inspect depth stats
     print("\nDepth statistics:")
 
+    print(f"Inference time: {elapsed:.4f} seconds")
     print(f"Shape : {depth.shape}")
     print(f"Min   : {depth.min():.6f}")
     print(f"Max   : {depth.max():.6f}")
