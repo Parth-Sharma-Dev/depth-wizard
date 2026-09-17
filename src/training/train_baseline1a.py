@@ -59,8 +59,8 @@ SEED = 42
 CROP_SIZE = 512
 
 # Start conservatively for the RTX 5060 8 GB.
-TRAIN_BATCH_SIZE = 2
-VAL_BATCH_SIZE = 2
+TRAIN_BATCH_SIZE = 8
+VAL_BATCH_SIZE = 8
 
 # Random crops generated per scene per epoch.
 SAMPLES_PER_SCENE = 8
@@ -553,27 +553,28 @@ def validate(
 
 
 def save_checkpoint(
-    model: nn.Module,
-    optimizer: torch.optim.Optimizer,
-    epoch: int,
-    metrics: dict[str, float],
-    path: Path,
-) -> None:
+    model,
+    optimizer,
+    epoch,
+    metrics,
+    path,
+    crop_size=512,
+):
+    # For Baseline 1A the backbone is frozen and loaded from Hugging Face,
+    # so saving the complete 338M-parameter model is unnecessary.
+    checkpoint = {
+        "epoch": epoch,
+        "height_head_state_dict": model.height_head.state_dict(),
+        "optimizer_state_dict": optimizer.state_dict(),
+        "metrics": metrics,
+        "model_name": "depth-anything/Depth-Anything-V2-Small-hf",
+        "crop_size": crop_size,
+        "frozen_backbone": True,
+    }
 
-    path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
+    path.parent.mkdir(parents=True, exist_ok=True)
 
-    torch.save(
-        {
-            "epoch": epoch,
-            "model_state_dict": model.state_dict(),
-            "optimizer_state_dict": optimizer.state_dict(),
-            "metrics": metrics,
-        },
-        path,
-    )
+    torch.save(checkpoint, path)
 
 
 def append_history(
